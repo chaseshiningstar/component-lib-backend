@@ -1,0 +1,49 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+// 表单主表
+model Form {
+  id              BigInt       @id @default(autoincrement())
+  creator         String
+  modifier        String
+  createTime      DateTime     @map("createTime")
+  lastUpdateTime  DateTime     @map("lastUpdateTime")
+  deleted         Boolean
+  formName        String       @map("formName")
+  formKey         String       @map("formKey")
+  layout          String
+  moduleName      String       @map("moduleName")
+
+  @@map("form")
+}
+
+// 字典主表
+model Dict {
+  id          Int       @id @default(autoincrement())
+  dictCode    String    @unique @map("dict_code")
+  dictName    String    @map("dict_name")
+  moduleName  String    @map("module_name")
+  description String
+  status      Boolean
+
+  @@map("dict")
+}
+
+// 字典项表
+model DictItem {
+  id         Int    @id @default(autoincrement())
+  dictCode   String @map("dict_code")
+  itemValue  String @map("item_value")
+  itemLabel  String @map("item_label")
+  sortOrder  Int    @map("sort_order")
+  status     Boolean
+
+  @@map("dict_item")
+}
+

@@ -12,10 +12,10 @@ router.get('/', async (req: any, res: any) => {
             ...form,
             id: form.id.toString()
         }));
-        res.json(serializedForms);
+        res.json({ code: 200, message: '获取表单列表成功', data: serializedForms });
     } catch (error) {
         console.error('Error fetching forms:', error);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({ code: 500, message: 'Internal server error', data: null });
     }
 });
 
@@ -25,7 +25,7 @@ router.get('/:id', async (req: any, res: any) => {
         const id = parseInt(req.params.id);
         const form = await getFormById(id);
         if (!form) {
-            res.status(404).json({ error: 'Form not found' });
+            res.status(404).json({ code: 404, message: 'Form not found', data: null });
             return;
         }
         // 处理 BigInt 序列化问题
@@ -33,10 +33,10 @@ router.get('/:id', async (req: any, res: any) => {
             ...form,
             id: form.id.toString()
         };
-        res.json(serializedForm);
+        res.json({ code: 200, message: '获取表单成功', data: serializedForm });
     } catch (error) {
         console.error('Error fetching form:', error);
-        res.status(404).json({ error: 'Form not found' });
+        res.status(404).json({ code: 404, message: 'Form not found', data: null });
     }
 });
 //按表单名称查询表单
@@ -45,7 +45,7 @@ router.get('/formName/:formName', async (req: any, res: any) => {
         const formName = req.params.formName;
         const forms = await getFormByFormName(formName);
         if (!forms || forms.length === 0) {
-            res.status(404).json({ error: 'Form not found' });
+            res.status(404).json({ code: 404, message: 'Form not found', data: null });
             return;
         }
         // 处理 BigInt 序列化问题
@@ -53,10 +53,10 @@ router.get('/formName/:formName', async (req: any, res: any) => {
             ...form,
             id: form.id.toString()
         }));
-        res.json(serializedForms);
+        res.json({ code: 200, message: '获取表单列表成功', data: serializedForms });
     } catch (error) {
         console.error('Error fetching form:', error);
-        res.status(404).json({ error: 'Form not found' });
+        res.status(404).json({ code: 404, message: 'Form not found', data: null });
     }
 });
 
@@ -70,10 +70,10 @@ router.post('/', async (req: any, res: any) => {
             ...form,
             id: form.id.toString()
         };
-        res.status(201).json(serializedForm);
+        res.status(201).json({ code: 200, message: '新增表单成功', data: serializedForm });
     } catch (error) {
         console.error('Error adding form:', error);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({ code: 500, message: 'Internal server error', data: null });
     }
 });
 
@@ -81,11 +81,11 @@ router.post('/', async (req: any, res: any) => {
 router.delete('/:id', async (req: any, res: any) => {
     try {
         const id = parseInt(req.params.id);
-        const form = await deleteFormById(id);
-        res.json(form);
+        await deleteFormById(id);
+        res.json({ code: 200, message: '删除表单成功', data: { message: 'Form deleted successfully' } });
     } catch (error) {
         console.error('Error deleting form:', error);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({ code: 500, message: 'Internal server error', data: null });
     }
 });
 
@@ -93,13 +93,13 @@ router.delete('/:id', async (req: any, res: any) => {
 router.delete('/batch/:ids', async (req: any, res: any) => {
     try {
         const ids = req.params.ids.split(',');
-        const forms = await Promise.all(ids.map(async (id: any) => deleteFormById(parseInt(id))));
-        res.json(forms);
+        await Promise.all(ids.map(async (id: any) => deleteFormById(parseInt(id))));
+        res.json({ code: 200, message: '批量删除表单成功', data: ids.map(() => ({ message: 'Form deleted successfully' })) });
     } catch (error) {
         console.error('Error deleting forms:', error);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({ code: 500, message: 'Internal server error', data: null });
     }
-})
+});
 
 //按ID更新表单
 router.put('/:id', async (req: any, res: any) => {
@@ -114,10 +114,10 @@ router.put('/:id', async (req: any, res: any) => {
             ...form,
             id: form.id.toString()
         };
-        res.json(serializedForm);
+        res.json({ code: 200, message: '更新表单成功', data: serializedForm });
     } catch (error) {
         console.error('Error updating form:', error);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({ code: 500, message: 'Internal server error', data: null });
     }
 });
 

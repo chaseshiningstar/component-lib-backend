@@ -36,9 +36,31 @@ export async function getFormById(id: number) {
 
 //新增表单
 export async function addForm(formData: any) {
-  const { creator,modifier, createTime ,lastUpdateTime, deleted , formName, formKey, layout , moduleName  } = formData;
-
-  // 1. 先创建主表记录
+  const { creator,modifier, createTime ,lastUpdateTime, deleted , formName, formKey, moduleName  } = formData;
+      const layout = JSON.stringify({
+        list: [
+            {
+            fieldType: "input",
+            label: "名称",
+            name: "dictName",
+            id: "wevaydtztweg",
+            require: true,
+            },
+            {
+            fieldType: "input",
+            label: "值",
+            name: "dictValue",
+            id: "beshp4br07f5",
+            require: true,
+            },
+        ],
+        config: {
+            layoutType: "horizontal",
+            labelWidth: "120px",
+            labelAlign: "left",
+        }
+    });
+  //创建表单记录
   const form = await prisma.form.create({
     data: {
       formName,

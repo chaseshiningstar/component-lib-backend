@@ -9,7 +9,13 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // ===== 中间件 =====
-app.use(cors()); // 允许跨域
+// 配置 CORS，支持 credentials
+app.use(cors({
+  origin: ['http://localhost:5173', 'http://localhost:5174'], // 允许的前端来源
+  credentials: true, // 允许携带凭证
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // 允许的请求方法
+  allowedHeaders: ['Content-Type', 'Authorization'] // 允许的请求头
+}));
 app.use(express.json()); // 解析 JSON 请求体（关键！）
 app.use(express.urlencoded({ extended: true })); // 解析 URL-encoded
 

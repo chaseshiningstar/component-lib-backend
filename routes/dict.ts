@@ -22,77 +22,77 @@ import {
 
 {
   // 查询所有字典
-router.get('/', async (req: any, res: any) => {
-  try {
-    const dicts = await getAllDict();
-    res.json(dicts);
-  } catch (error) {
-    console.error('Error fetching dicts:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
+  router.get('/', async (req: any, res: any) => {
+    try {
+      const dicts = await getAllDict();
+      res.json({ code: 200, message: '获取字典列表成功', data: dicts });
+    } catch (error) {
+      console.error('Error fetching dicts:', error);
+      res.status(500).json({ code: 500, message: 'Internal server error', data: null });
+    }
+  });
 
-// 按ID查询字典
-router.get('/:id', async (req: any, res: any) => {
-  try {
-    const id = parseInt(req.params.id);
-    const dict = await getDictById(id);
-    if (!dict) {
-      res.status(404).json({ error: 'Dict not found' });
-      return;
+  // 按ID查询字典
+  router.get('/:id', async (req: any, res: any) => {
+    try {
+      const id = parseInt(req.params.id);
+      const dict = await getDictById(id);
+      if (!dict) {
+        res.status(404).json({ code: 404, message: 'Dict not found', data: null });
+        return;
+      }
+      res.json({ code: 200, message: '获取字典成功', data: dict });
+    } catch (error) {
+      console.error('Error fetching dict:', error);
+      res.status(404).json({ code: 404, message: 'Dict not found', data: null });
     }
-    res.json(dict);
-  } catch (error) {
-    console.error('Error fetching dict:', error);
-    res.status(404).json({ error: 'Dict not found' });
-  }
-});
+  });
 
-// 按dictCode查询字典
-router.get('/dictCode/:dictCode', async (req: any, res: any) => {
-  try {
-    const dictCode = req.params.dictCode;
-    const dict = await getDictByDictCode(dictCode);
-    if (!dict) {
-      res.status(404).json({ error: 'Dict not found' });
-      return;
+  // 按dictCode查询字典
+  router.get('/dictCode/:dictCode', async (req: any, res: any) => {
+    try {
+      const dictCode = req.params.dictCode;
+      const dict = await getDictByDictCode(dictCode);
+      if (!dict) {
+        res.status(404).json({ code: 404, message: 'Dict not found', data: null });
+        return;
+      }
+      res.json({ code: 200, message: '获取字典成功', data: dict });
+    } catch (error) {
+      console.error('Error fetching dict:', error);
+      res.status(404).json({ code: 404, message: 'Dict not found', data: null });
     }
-    res.json(dict);
-  } catch (error) {
-    console.error('Error fetching dict:', error);
-    res.status(404).json({ error: 'Dict not found' });
-  }
-});
-// 按dictName查询字典
-router.get('/dictName/:dictName', async (req: any, res: any) => {
-  try {
-    const dictName = req.params.dictName;
-    const dict = await getDictByDictName(dictName);
-    if (!dict) {
-      res.status(404).json({ error: 'Dict not found' });
-      return;
+  });
+  // 按dictName查询字典
+  router.get('/dictName/:dictName', async (req: any, res: any) => {
+    try {
+      const dictName = req.params.dictName;
+      const dict = await getDictByDictName(dictName);
+      if (!dict) {
+        res.status(404).json({ code: 404, message: 'Dict not found', data: null });
+        return;
+      }
+      res.json({ code: 200, message: '获取字典成功', data: dict });
+    } catch (error) {
+      console.error('Error fetching dict:', error);
+      res.status(404).json({ code: 404, message: 'Dict not found', data: null });
     }
-    res.json(dict);
-  } catch (error) {
-    console.error('Error fetching dict:', error);
-    res.status(404).json({ error: 'Dict not found' });
-  }
-});
-// 按moduleName查询字典
-router.get('/moduleName/:moduleName', async (req: any, res: any) => {
-  try {
-    const moduleName = req.params.moduleName;
-    const dict = await getDictByModuleName(moduleName);
-    if (!dict) {
-      res.status(404).json({ error: 'Dict not found' });
-      return;
+  });
+  // 按moduleName查询字典
+  router.get('/moduleName/:moduleName', async (req: any, res: any) => {
+    try {
+      const moduleName = req.params.moduleName;
+      const dict = await getDictByModuleName(moduleName);
+      if (!dict) {
+        res.status(404).json({ code: 404, message: 'Dict not found', data: null });
+        return;
+      }
+      res.json({ code: 200, message: '获取字典成功', data: dict });
+    } catch (error) {
+      console.error('Error fetching dict:', error);
+      res.status(404).json({ code: 404, message: 'Dict not found', data: null });
     }
-    res.json(dict);
-  } catch (error) {
-    console.error('Error fetching dict:', error);
-    res.status(404).json({ error: 'Dict not found' });
-  }
-});
+  });
 }
 
 // 新增字典
@@ -100,10 +100,10 @@ router.post('/', async (req: any, res: any) => {
   try {
     const dictData = req.body;
     const dict = await addDict(dictData);
-    res.status(201).json(dict);
+    res.status(201).json({ code: 200, message: '新增字典成功', data: dict });
   } catch (error) {
     console.error('Error adding dict:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ code: 500, message: 'Internal server error', data: null });
   }
 });
 
@@ -116,10 +116,10 @@ router.put('/:id', async (req: any, res: any) => {
       id
     };
     const dict = await updateDict(dictData);
-    res.json(dict);
+    res.json({ code: 200, message: '更新字典成功', data: dict });
   } catch (error) {
     console.error('Error updating dict:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ code: 500, message: 'Internal server error', data: null });
   }
 });
 
@@ -127,11 +127,11 @@ router.put('/:id', async (req: any, res: any) => {
 router.delete('/:id', async (req: any, res: any) => {
   try {
     const id = parseInt(req.params.id);
-    const dict = await deleteDictById(id);
-    res.json(dict);
+    await deleteDictById(id);
+    res.json({ code: 200, message: '删除字典成功', data: { message: 'Dict deleted successfully' } });
   } catch (error) {
     console.error('Error deleting dict:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ code: 500, message: 'Internal server error', data: null });
   }
 });
 
@@ -143,13 +143,13 @@ router.get('/item/:dictCode', async (req: any, res: any) => {
     const dictCode = req.params.dictCode;
     const dictItems = await getDictItemsByDictCode(dictCode);
     if (!dictItems) {
-      res.status(404).json({ error: 'DictItems not found' });
+      res.status(404).json({ code: 404, message: 'DictItems not found', data: null });
       return;
     }
-    res.json(dictItems);
+    res.json({ code: 200, message: '获取字典项列表成功', data: dictItems });
   } catch (error) {
     console.error('Error fetching dict items:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ code: 500, message: 'Internal server error', data: null });
   }
 });
 
@@ -160,10 +160,10 @@ router.post('/item', async (req: any, res: any) => {
   try {
     const dictItemData = req.body;
     const dictItem = await addDictItem(dictItemData);
-    res.status(201).json(dictItem);
+    res.status(201).json({ code: 200, message: '新增字典项成功', data: dictItem });
   } catch (error) {
     console.error('Error adding dict item:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ code: 500, message: 'Internal server error', data: null });
   }
 });
 
@@ -176,10 +176,10 @@ router.put('/item/:id', async (req: any, res: any) => {
       id
     };
     const dictItem = await updateDictItem(dictItemData);
-    res.json(dictItem);
+    res.json({ code: 200, message: '更新字典项成功', data: dictItem });
   } catch (error) {
     console.error('Error updating dict item:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ code: 500, message: 'Internal server error', data: null });
   }
 });
 
@@ -187,11 +187,11 @@ router.put('/item/:id', async (req: any, res: any) => {
 router.delete('/item/:id', async (req: any, res: any) => {
   try {
     const id = parseInt(req.params.id);
-    const dictItem = await deleteDictItemById(id);
-    res.json(dictItem);
+    await deleteDictItemById(id);
+    res.json({ code: 200, message: '删除字典项成功', data: { message: 'Dict item deleted successfully' } });
   } catch (error) {
     console.error('Error deleting dict item:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ code: 500, message: 'Internal server error', data: null });
   }
 });
 

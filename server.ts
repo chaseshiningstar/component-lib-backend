@@ -4,6 +4,9 @@ const cors = require('cors');
 const readline = require('readline');
 const formRoutes = require('./routes/form'); // ts-node 会自动处理 .ts 文件
 const dictRoutes = require('./routes/dict'); // 导入字典路由
+const tableColumnRoutes = require('./routes/tableColumn'); // 导入表列路由
+
+
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -11,10 +14,10 @@ const PORT = process.env.PORT || 3000;
 // ===== 中间件 =====
 // 配置 CORS，支持 credentials
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:5174'], // 允许的前端来源
-  credentials: true, // 允许携带凭证
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // 允许的请求方法
-  allowedHeaders: ['Content-Type', 'Authorization'] // 允许的请求头
+    origin: ['http://localhost:5173', 'http://localhost:5174' ], // 允许的前端来源
+    credentials: true, // 允许携带凭证
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // 允许的请求方法
+    allowedHeaders: ['Content-Type', 'Authorization'] // 允许的请求头
 }));
 app.use(express.json()); // 解析 JSON 请求体（关键！）
 app.use(express.urlencoded({ extended: true })); // 解析 URL-encoded
@@ -22,6 +25,7 @@ app.use(express.urlencoded({ extended: true })); // 解析 URL-encoded
 // ===== 路由 =====
 app.use('/api/sys/form', formRoutes);
 app.use('/api/sys/dict', dictRoutes); // 注册字典路由
+app.use('/api/sys/tableColumn', tableColumnRoutes); // 注册表列路由
 
 // ===== 全局错误处理（可选）=====
 app.use((err: any, req: any, res: any, next: any) => {

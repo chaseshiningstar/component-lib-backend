@@ -12,7 +12,7 @@
     "resolveJsonModule": true,
     "declaration": true,
     "sourceMap": true,
-    "isolatedModules": true
+    "isolatedModules": false
   },
   "include": [
     "**/*.ts",

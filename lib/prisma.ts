@@ -1,5 +1,5 @@
 // 导入生成的 Prisma 客户端
-import { PrismaClient } from '../generated/prisma';
+const { PrismaClient } = require('../generated/prisma');
 
 // 创建 Prisma 客户端实例
 const prisma = new PrismaClient();

@@ -7,20 +7,12 @@ datasource db {
   provider = "mysql"
 }
 
-// 表单主表
-model Form {
-  id              BigInt       @id @default(autoincrement())
-  creator         String
-  modifier        String
-  createTime      DateTime     @map("createTime")
-  lastUpdateTime  DateTime     @map("lastUpdateTime")
-  deleted         Boolean
-  formName        String       @map("formName")
-  formKey         String       @map("formKey")
-  layout          String
-  moduleName      String       @map("moduleName")
+// 部门表
+model Department {
+  id              Int    @id @default(autoincrement())
+  department_name String @map("department_name")
 
-  @@map("form")
+  @@map("department")
 }
 
 // 字典主表
@@ -43,7 +35,62 @@ model DictItem {
   itemLabel  String @map("item_label")
   sortOrder  Int    @map("sort_order")
   status     Boolean
-
+  
   @@map("dict_item")
+}
+
+// 员工表
+model Employee {
+  id            Int    @id @default(autoincrement())
+  employee_name String @map("employee_name")
+  department_id Int    @map("department_id")
+  hire_date     DateTime @map("hire_date")
+  gender        Int    @map("gender")
+
+  @@map("employee")
+}
+
+// 表单主表
+model Form {
+  id             BigInt   @id @default(autoincrement())
+  creator        String   @map("creator")
+  modifier       String   @map("modifier")
+  createTime     DateTime @map("createTime")
+  lastUpdateTime DateTime @map("lastUpdateTime")
+  deleted        Boolean  @map("deleted")
+  formName       String   @map("formName")
+  formKey        String   @map("formKey")
+  layout         String   @map("layout")
+  moduleName     String   @map("moduleName")
+
+  @@map("form")
+}
+
+// 销售记录表
+model SalesRecord {
+  id          Int     @id @default(autoincrement())
+  product_name String  @map("product_name")
+  sale_date    DateTime @map("sale_date")
+  amount       Decimal @map("amount") @db.Decimal(10, 2)
+
+  @@map("sales_record")
+}
+
+
+// 表列配置表
+model TableColumnConfig {
+  id                BigInt  @id @default(autoincrement())
+  tableName         String  
+  conditionName     String   
+  relatedTableName  String?   
+  columnName        String  
+  columnOrder       Int?      
+  dataKey           String   
+  customRender      String?  
+  i18nKey           String?  
+  isSearchField     Int?  
+  searchType        String?   
+
+  @@map("table_column_config")
 }
 

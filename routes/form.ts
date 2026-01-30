@@ -6,6 +6,7 @@ import { getAllForm, getFormByFormName, addForm, deleteFormById, updateForm, get
 //查询所有表单
 router.get('/', async (req: any, res: any) => {
     try {
+        console.log('getAllForm');
         const forms = await getAllForm();
         // 处理 BigInt 序列化问题，将 BigInt 转换为字符串
         const serializedForms = forms.map((form: any) => ({

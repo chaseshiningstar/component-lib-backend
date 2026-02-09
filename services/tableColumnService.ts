@@ -214,16 +214,12 @@ export async function saveTableColumns(tableName: string, changedTableName: stri
         if (!tableName || typeof tableName !== 'string' || tableName.trim() === '') {
             throw new Error('Invalid tableName parameter');
         }
-        if (!changedTableName || typeof changedTableName !== 'string' || changedTableName.trim() === '') {
-            throw new Error('Invalid changedTableName parameter');
-        }
         if (!filter || typeof filter !== 'string' || filter.trim() === '') {
             throw new Error('Invalid filter parameter');
         }
         if (!Array.isArray(columns)) {
             throw new Error('Invalid columns parameter, must be an array');
         }
-
         // 限制记录数量
         if (columns.length > 1000) {
             throw new Error('Too many columns to save, please contact administrator');
@@ -233,12 +229,15 @@ export async function saveTableColumns(tableName: string, changedTableName: stri
 
         // 使用事务处理，确保数据一致性
         const result = await prisma.$transaction(async (prisma) => {
+            // 确定 relatedTableName 的值：当 changedTableName === tableName 时，表示没有关联，设置为空字符串
+            const relatedTableNameValue = changedTableName === tableName ? '' : changedTableName;
+
             // 先查询符合条件的记录数量
             const deleteCount = await prisma.tableColumnConfig.count({
                 where: {
                     tableName: tableName,
                     conditionName: filter,
-                    relatedTableName: changedTableName,
+                    relatedTableName: relatedTableNameValue,
                 }
             });
 
@@ -252,7 +251,7 @@ export async function saveTableColumns(tableName: string, changedTableName: stri
                 where: {
                     tableName: tableName,
                     conditionName: filter,
-                    relatedTableName: changedTableName,
+                    relatedTableName: relatedTableNameValue,
                 }
             });
 
@@ -262,7 +261,7 @@ export async function saveTableColumns(tableName: string, changedTableName: stri
                     ...column,
                     tableName: tableName,
                     conditionName: filter,
-                    relatedTableName: changedTableName,
+                    relatedTableName: relatedTableNameValue,
                 }))
             });
 

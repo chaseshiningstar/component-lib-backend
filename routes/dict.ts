@@ -59,21 +59,21 @@ import {
     }
   });
 
-  // 按ID查询字典
-  router.get('/:id', async (req: any, res: any) => {
-    try {
-      const id = parseInt(req.params.id);
-      const dict = await getDictById(id);
-      if (!dict) {
-        res.status(404).json({ code: 404, message: 'Dict not found', data: null });
-        return;
-      }
-      res.json({ code: 200, message: '获取字典成功', data: dict });
-    } catch (error) {
-      console.error('Error fetching dict:', error);
-      res.status(404).json({ code: 404, message: 'Dict not found', data: null });
-    }
-  });
+  // // 按ID查询字典
+  // router.get('/:id', async (req: any, res: any) => {
+  //   try {
+  //     const id = parseInt(req.params.id);
+  //     const dict = await getDictById(id);
+  //     if (!dict) {
+  //       res.status(404).json({ code: 404, message: 'Dict not found', data: null });
+  //       return;
+  //     }
+  //     res.json({ code: 200, message: '获取字典成功', data: dict });
+  //   } catch (error) {
+  //     console.error('Error fetching dict:', error);
+  //     res.status(404).json({ code: 404, message: 'Dict not found', data: null });
+  //   }
+  // });
 
   // 按dictCode查询字典
   router.get('/dictCode/:dictCode', async (req: any, res: any) => {

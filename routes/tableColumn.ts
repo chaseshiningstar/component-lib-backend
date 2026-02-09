@@ -163,7 +163,10 @@ router.post('/delete', async (req: any, res: any) => {
 router.post('/save', async (req: any, res: any) => {
     try {
         const tableName = req.body.tableName;
-        const changedTableName = req.body.changedTableName;
+        console.log("tableName:", tableName);
+        console.log("changedTableName:", req.body.changedTableName);
+        const changedTableName = req.body.changedTableName == tableName ? '' : req.body.changedTableName;
+        console.log("changedTableName:", changedTableName);
         const filter = req.body.filter;
         const columns = req.body.tableData;
         console.log("保存的表头项:", columns);

@@ -1,0 +1,11 @@
+declare const express: any;
+declare const cors: any;
+declare const readline: any;
+declare const formRoutes: any;
+declare const dictRoutes: any;
+declare const tableColumnRoutes: any;
+declare const businessFormRoutes: any;
+declare const app: any;
+declare const PORT: string | number;
+declare const server: any;
+declare const shutdownServer: () => void;

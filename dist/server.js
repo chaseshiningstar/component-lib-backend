@@ -6,74 +6,62 @@ const formRoutes = require('./routes/form'); // ts-node 会自动处理 .ts 文�
 const dictRoutes = require('./routes/dict'); // 导入字典路由
 const tableColumnRoutes = require('./routes/tableColumn'); // 导入表列路由
 const businessFormRoutes = require('./routes/businessForm'); // 导入业务表单路由
-
-
 const app = express();
 const PORT = process.env.PORT || 3000;
-
 // ===== 中间件 =====
 // 配置 CORS，支持 credentials
 app.use(cors({
-    origin: ['http://localhost:5173', 'http://localhost:5174' ], // 允许的前端来源
+    origin: ['http://localhost:5173', 'http://localhost:5174'], // 允许的前端来源
     credentials: true, // 允许携带凭证
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // 允许的请求方法
     allowedHeaders: ['Content-Type', 'Authorization'] // 允许的请求头
 }));
 app.use(express.json()); // 解析 JSON 请求体（关键！）
 app.use(express.urlencoded({ extended: true })); // 解析 URL-encoded
-
 // ===== 路由 =====
 app.use('/api/sys/form', formRoutes);
 app.use('/api/sys/dict', dictRoutes); // 注册字典路由
 app.use('/api/sys/tableColumn', tableColumnRoutes); // 注册表列路由
 app.use('/api/sys/', businessFormRoutes); // 注册业务表单路由
-
-
 // ===== 全局错误处理（可选）=====
-app.use((err: any, req: any, res: any, next: any) => {
+app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).json({ error: 'Something went wrong!' });
 });
-
 // ===== 404 处理 =====
-app.use((req: any, res: any) => {
+app.use((req, res) => {
     res.status(404).json({ error: 'Route not found' });
 });
-
 // ===== 启动服务器 =====
 const server = app.listen(PORT, () => {
     console.log(`✅ Server running on http://localhost:${PORT}`);
     console.log(`📌 Press Ctrl+C to stop the server gracefully`);
 });
-
 // ===== 关闭服务器 =====
 const shutdownServer = () => {
     console.log('\n🔄 Shutting down server...');
-
     // 关闭HTTP服务器
-    server.close((err: any) => {
+    server.close((err) => {
         if (err) {
             console.error('❌ Error while shutting down server:', err);
             process.exit(1); // 非零退出表示出错
         }
-
         console.log('✅ Server closed gracefully');
         process.exit(0); // 零退出表示成功
     });
 };
-
 // 监听终止信号
 process.on('SIGINT', shutdownServer); // Ctrl+C
 process.on('SIGTERM', shutdownServer); // kill命令
-
 // Windows特殊处理
 if (process.platform === 'win32') {
     const rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout
     });
-
     rl.on('SIGINT', () => {
         shutdownServer();
     });
-};
+}
+;
+//# sourceMappingURL=server.js.map
